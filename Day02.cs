@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 
-namespace advent_of_code_scala_2024;
+namespace advent_of_code_csharp_2024;
 
 public class Day02
 {

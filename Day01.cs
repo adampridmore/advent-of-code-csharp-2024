@@ -4,7 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Converters;
 
-namespace advent_of_code_scala_2024;
+namespace advent_of_code_csharp_2024;
 
 public class Day01
 {
