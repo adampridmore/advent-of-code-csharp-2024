@@ -50,38 +50,39 @@ public class Day02
         Assert.Equal(242, ans);
     }
 
+    public enum IsSafeEnum {
+        Increasing,
+        Decreasing,
+        Unsafe
+    }
+
     private static bool IsSafe(List<int> line) 
     {
         var groupings = line
             .Zip(line.Skip(1).ToList(),
                 (a, b) => {
-
                     var diff = a - b;
-
-                    if (diff == 0) return 0;
-                    if (diff < -3) return 0;
-                    if (diff > 3) return 0;
-                    if (diff < 0) return -1;
-                    if (diff > 0) return 1;
-
+                    if (diff == 0) return IsSafeEnum.Unsafe;
+                    if (diff < -3 ) return IsSafeEnum.Unsafe;
+                    if (diff > 3 ) return IsSafeEnum.Unsafe;
+                    if (diff < 0) return IsSafeEnum.Decreasing;
+                    if (diff > -3) return IsSafeEnum.Increasing;
                     throw new Exception($"Unexpected different {diff}");
                 })
-            .GroupBy(x=>x)
-            ;
+            .GroupBy(x=>x);
 
         if (!groupings.Any()){
             return true;
         }
 
         if (groupings.Count() == 1){
-            if (groupings.First().Key == 0){
+            if (groupings.Single().Key == IsSafeEnum.Unsafe){
                 return false;
-            } else {
-                return true;
             }
+            return true;
+        } else{
+            return false;
         }
-
-        return false;
     }
 
     [Fact]
@@ -96,8 +97,6 @@ public class Day02
         Assert.False(IsSafe(new List<int> {1,1}), "1 1");
         Assert.False(IsSafe(new List<int> {1,5}), "1 5");
         Assert.False(IsSafe(new List<int> {5,1}), "4 1");
-        Assert.False(IsSafe(new List<int> {1,1}), "1 1");
-
 
         Assert.True(IsSafe(ParseLine("7 6 4 2 1"))); // true
         Assert.False(IsSafe(ParseLine("1 2 7 8 9"))); // false
