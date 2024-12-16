@@ -50,6 +50,33 @@ public class Day02
         Assert.Equal(242, ans);
     }
 
+    [Fact]
+    public void ExampleLines_Part2()
+    {
+        var lines = _testLines.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+
+        var parsedLines = lines
+            .Select(ParseLine);
+
+        var expected = new List<int>{ 7, 6, 4, 2, 1};
+        Assert.Equal(expected, parsedLines.ToList()[0]);
+
+        Assert.Equal(4, parsedLines.Count(IsSaveTolerant));
+    }
+
+    [Fact]
+    public void RealData_Part2()
+    {
+    var lines = File.ReadLines(_inputFilename);
+
+        var parsedLines = lines
+            .Select(ParseLine);
+
+        var ans = parsedLines.Count(IsSaveTolerant);
+
+        Assert.Equal(311, ans);
+    }
+
     public enum IsSafeEnum {
         Increasing,
         Decreasing,
@@ -58,34 +85,62 @@ public class Day02
 
     private static bool IsSafe(List<int> line) 
     {
-        var groupings = line
-            .Zip(line.Skip(1).ToList(),
-                (a, b) => {
-                    var diff = a - b;
-                    if (diff == 0) return IsSafeEnum.Unsafe;
-                    if (diff < -3 ) return IsSafeEnum.Unsafe;
-                    if (diff > 3 ) return IsSafeEnum.Unsafe;
-                    if (diff < 0) return IsSafeEnum.Decreasing;
-                    if (diff > -3) return IsSafeEnum.Increasing;
-                    throw new Exception($"Unexpected different {diff}");
-                })
-            .GroupBy(x=>x);
+        var lookup = 
+            line
+                .Zip(line.Skip(1).ToList(),
+                    (a, b) => {
+                        var diff = a - b;
+                        if (diff == 0) return IsSafeEnum.Unsafe;
+                        if (diff < -3 ) return IsSafeEnum.Unsafe;
+                        if (diff > 3 ) return IsSafeEnum.Unsafe;
+                        if (diff < 0) return IsSafeEnum.Decreasing;
+                        if (diff > -3) return IsSafeEnum.Increasing;
+                        throw new Exception($"Unexpected difference {diff}");
+                    })
+                .ToLookup(x=>x);
 
-        if (!groupings.Any()){
+        if (!lookup.Any()){
             return true;
         }
 
-        if (groupings.Count() == 1){
-            if (groupings.Single().Key == IsSafeEnum.Unsafe){
-                return false;
-            }
-            return true;
-        } else{
-            return false;
-        }
+        return IsIncreasingOrDecreasingOnly(lookup);
     }
 
-    [Fact]
+    private static bool IsSaveTolerant(List<int> line){
+        if (IsSafe(line)){
+            return true;
+        }
+
+        for (int i = 0 ; i < line.Count; i++){
+            var removeLevel = new List<int>(line);
+            removeLevel.RemoveAt(i);
+            if (IsSafe(removeLevel)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public static bool IsIncreasingOrDecreasingOnly(ILookup<IsSafeEnum, IsSafeEnum> lookup)
+    { 
+        if (lookup.Contains(IsSafeEnum.Unsafe))
+        {
+            return false;
+        }
+
+        if (lookup.Contains(IsSafeEnum.Decreasing) && !lookup.Contains(IsSafeEnum.Increasing)){
+            return true;
+        }
+
+        if (!lookup.Contains(IsSafeEnum.Decreasing) && lookup.Contains(IsSafeEnum.Increasing)){
+            return true;
+        }
+
+        return false;
+    }
+
+   [Fact]
     public void IsSafeTest()
     {
         Assert.True(IsSafe(new List<int>()), "empty");
@@ -105,5 +160,25 @@ public class Day02
         Assert.False(IsSafe(ParseLine("8 6 4 4 1"))); // false
         Assert.True(IsSafe(ParseLine("1 3 6 7 9"))); // true
      }
+
+    [Fact]
+    public void IsSafeTolerantTest()
+    {
+        Assert.True(IsSaveTolerant(new List<int>()), "empty");
+        Assert.True(IsSaveTolerant(new List<int> {1,2}), "1 2");
+        Assert.True(IsSaveTolerant(new List<int> {1,2}), "2 1");
+        Assert.True(IsSaveTolerant(new List<int> {1,4}), "1 4");
+        Assert.True(IsSaveTolerant(new List<int> {4,1}), "4 1");
+        
+        Assert.False(IsSaveTolerant(new List<int> {1,1,1}), "1 1 1");
+        Assert.False(IsSaveTolerant(new List<int> {1,5,10}), "1 5 10");
+        Assert.False(IsSaveTolerant(new List<int> {10,5,1}), "8 4 1");
+
+        Assert.True(IsSaveTolerant(ParseLine("7 6 4 2 1")));
+        Assert.False(IsSaveTolerant(ParseLine("1 2 7 8 9")));
+        Assert.False(IsSaveTolerant(ParseLine("9 7 6 2 1")));
+        Assert.True(IsSaveTolerant(ParseLine("1 3 2 4 5")));
+        Assert.True(IsSaveTolerant(ParseLine("8 6 4 4 1")));
+        Assert.True(IsSaveTolerant(ParseLine("1 3 6 7 9")));
+     }
 }
- 
