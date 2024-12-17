@@ -17,7 +17,7 @@ public class Day01Tests
         var parsedLines = lines
             .Select(Day01.ParseLine);
 
-        Assert.Equal(new Day01.Line(3,4), parsedLines.First());
+        Assert.Equal(new Day01.Line(3, 4), parsedLines.First());
 
         var ans = Day01.SolveDay1_Part1(parsedLines);
 
@@ -52,7 +52,7 @@ public class Day01Tests
         Assert.Equal(31, answer);
     }
 
-   [Fact]
+    [Fact]
     public void RealData_Part2()
     {
         var lines = File.ReadLines(Day01.InputFilename);
@@ -65,4 +65,3 @@ public class Day01Tests
         Assert.Equal(22014209, ans);
     }
 }
- 

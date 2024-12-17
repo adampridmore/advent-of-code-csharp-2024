@@ -6,18 +6,20 @@ public class Day01
 
     public record Line(int First, int Second);
 
-    public static Line ParseLine(string line){
+    public static Line ParseLine(string line)
+    {
         var split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
         return new Line(int.Parse(split[0]), int.Parse(split[1]));
     }
 
-    public static int SolveDay1_Part1(IEnumerable<Line> lines){
-        var leftOrdered = lines.OrderBy(x=>x.First);
-        var rightOrdered = lines.OrderBy(x=>x.Second);
+    public static int SolveDay1_Part1(IEnumerable<Line> lines)
+    {
+        var leftOrdered = lines.OrderBy(x => x.First);
+        var rightOrdered = lines.OrderBy(x => x.Second);
 
         return leftOrdered
-                .Zip(rightOrdered, (a,b) => Math.Abs(a.First - b.Second))
+                .Zip(rightOrdered, (a, b) => Math.Abs(a.First - b.Second))
                 .Sum();
     }
 
@@ -45,4 +47,3 @@ public class Day01
         return answer;
     }
 }
- 

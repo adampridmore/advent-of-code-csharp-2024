@@ -10,28 +10,32 @@ public class Day03Tests
 
 
   [Fact]
-  public void TestExample_part1(){
+  public void TestExample_part1()
+  {
     var ans = Day03.RunProgram(_testInput);
 
-    Assert.Equal(161,ans);
+    Assert.Equal(161, ans);
   }
 
   [Fact]
-  public void ReadData_part1(){
+  public void ReadData_part1()
+  {
     var ans = Day03.RunProgram(File.ReadAllText(InputFilename));
 
-    Assert.Equal(159833790,ans);
+    Assert.Equal(159833790, ans);
   }
 
   [Fact]
-  public void TestExample_part2(){
+  public void TestExample_part2()
+  {
     var ans = Day03.RunProgramPartII(_testInput_Part2);
 
     Assert.Equal(48, ans);
   }
 
   [Fact]
-  public void RealData_part2(){
+  public void RealData_part2()
+  {
     var ans = Day03.RunProgramPartII(File.ReadAllText(InputFilename));
 
     Assert.Equal(89349241, ans);
