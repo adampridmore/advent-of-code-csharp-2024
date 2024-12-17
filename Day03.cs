@@ -32,25 +32,16 @@ public class Day03
 
     var matches = regex.Matches(testInput);
 
-    bool enable = true;
+    bool enabled = true;
     int total = 0;
     foreach (Match match in matches)
     {
       if (match.Value == "do()")
-      {
-        enable = true;
-      }
+        enabled = true;
       else if (match.Value == "don't()")
-      {
-        enable = false;
-      }
-      else
-      {
-        if (enable)
-        {
-          total += ProcessMul(match);
-        }
-      }
+        enabled = false;
+      else if (enabled)
+        total += ProcessMul(match);
     }
 
     return total;
