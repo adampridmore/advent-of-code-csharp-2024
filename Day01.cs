@@ -4,13 +4,6 @@ public class Day01
 {
     public static readonly string InputFilename = @"../../../Day01_input.txt";
 
-    private readonly string _testLines = @"3   4
-4   3
-2   5
-1   3
-3   9
-3   3";
-
     public record Line(int First, int Second);
 
     public static Line ParseLine(string line){
