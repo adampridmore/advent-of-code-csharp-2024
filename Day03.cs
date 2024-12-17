@@ -30,6 +30,28 @@ public class Day03
     return ans;
   }
 
+  public static int RunProgramPartII(string testInput){
+    var regex = new Regex("""mul\(([0-9]+),([0-9]+)\)|don't\(\)|do\(\)""");
+
+    var matches = regex.Matches(testInput);
+
+    bool enable = true;
+    int total = 0;
+    foreach(Match match in matches){
+      if (match.Value == "do()"){
+        enable = true;
+      } else if (match.Value == "don't()"){
+        enable = false;
+      } else {
+        if (enable) {
+          total += ProcessMul(match);
+        }
+      }
+    }
+
+    return total;
+  }
+
   [Fact]
   public void TestExample_part1(){
     var ans = RunProgram(_testInput);
@@ -46,27 +68,15 @@ public class Day03
 
   [Fact]
   public void TestExample_part2(){
-    var regex = new Regex("""mul\(([0-9]+),([0-9]+)\)|don't\(\)|do\(\)""");
+    var ans = RunProgramPartII(_testInput_Part2);
 
-    var matches = regex.Matches(_testInput_Part2);
+    Assert.Equal(48, ans);
+  }
 
-    bool enable = true;
-    int total = 0;
-    foreach(Match match in matches){
-      if (match.Value == "do()"){
-        enable = true;
-      } else if (match.Value == "don't()"){
-        enable = false;
-      } else {
-        if (enable) {
-          var x = int.Parse(match.Groups[1].Value);
-          var y = int.Parse(match.Groups[2].Value);
+  [Fact]
+  public void RealData_part2(){
+    var ans = RunProgramPartII(File.ReadAllText(InputFilename));
 
-          total += x * y;
-        }
-      }
-    }
-
-    Assert.Equal(48, total);
+    Assert.Equal(1, ans);
   }
 }
