@@ -1,9 +1,3 @@
-using System.Collections;
-using System.IO.Compression;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
-
 namespace advent_of_code_csharp_2024;
 
 public class Day02Tests
