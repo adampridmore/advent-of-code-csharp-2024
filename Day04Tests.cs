@@ -1,6 +1,3 @@
-using System.ComponentModel.Design;
-using System.Runtime.CompilerServices;
-
 namespace advent_of_code_csharp_2024;
 
 public class Day04Tests
@@ -40,14 +37,7 @@ MXMXAXMASX";
       return ' ';
     }
 
-    try
-    {
-      return grid[position.y][position.x];
-    }
-    catch (IndexOutOfRangeException ex)
-    {
-      throw new Exception($"Position: {position} {grid[0].Length}, {grid.Length}", ex);
-    }
+    return grid[position.y][position.x];
   }
 
   private static bool CheckXmasInDirection(char[][] grid, Position position, Func<Position, Position> positionModifier)
@@ -93,10 +83,22 @@ MXMXAXMASX";
 
     var count = results.Count(r => r);
     
-    // if (count >0) System.Console.Out.WriteLine($"{p}: {count}");
-    
     return count;
   }
+
+  private static int CountXmas(char[][] grid)
+    {
+        var count = 0;
+        for (var y = 0; y < grid.Length; y++)
+        {
+            for (var x = 0; x < grid[0].Length; x++)
+            {
+                count += XmasCellCount(grid, new Position(x, y)); ;
+            }
+        }
+
+        return count;
+    }
 
   [Fact]
   public void GetCellValueTest()
@@ -122,70 +124,31 @@ MXMXAXMASX";
   {
     char[][] grid = LoadGrid();
 
-    // var results = new int[10][];
-    // for(int i = 0 ; i < results.Length;i++){
-    //   results[i] = new int[10];
-    //   Array.Fill(results[i], 0);
-    // }
-
-    var count = 0;
-    for (var y = 0; y < grid.Length; y++)
-    {
-      for (var x = 0; x < grid[0].Length; x++)
-      {
-        var cellCount = XmasCellCount(grid, new Position(x, y));
-        count += cellCount;
-        // results[y][x] = cellCount;
-      }
-    }
-
-    // foreach(var r in results){
-    //   var line = String.Join("", r.Select(r => r.ToString()));
-    //   System.Console.Out.WriteLine(line);
-    // }
-
-    Assert.Equal(18, count);
+    Assert.Equal(18, CountXmas(grid));
   }
 
-   [Fact]
+  [Fact]
   public void TestRealData_part1()
   {
-    char[][] grid = File.ReadLines(InputFilename)
-        .Select(line => line.ToCharArray().Where(c => !char.IsWhiteSpace(c)).ToArray())
-        .ToArray();
+    var lines = File.ReadLines(InputFilename);
+    
+    char[][] grid = LinesToChars(lines);
 
-    // var results = new int[10][];
-    // for(int i = 0 ; i < results.Length;i++){
-    //   results[i] = new int[10];
-    //   Array.Fill(results[i], 0);
-    // }
-
-    var count = 0;
-    for (var y = 0; y < grid.Length; y++)
-    {
-      for (var x = 0; x < grid[0].Length; x++)
-      {
-        var cellCount = XmasCellCount(grid, new Position(x, y));
-        count += cellCount;
-        // results[y][x] = cellCount;
-      }
-    }
-
-    // foreach(var r in results){
-    //   var line = String.Join("", r.Select(r => r.ToString()));
-    //   System.Console.Out.WriteLine(line);
-    // }
-
-    Assert.Equal(2613, count);
+    Assert.Equal(2613, CountXmas(grid));
   }
 
-    private static char[][] LoadGrid()
-    {
-      return _testInput
-        .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-        .Select(line => line.ToCharArray().Where(c => !char.IsWhiteSpace(c)).ToArray())
-        .ToArray();
-    }
+  private static char[][] LoadGrid()
+  {
+    var lines = _testInput.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+    return LinesToChars(lines);
+
+  }
+
+  private static char[][] LinesToChars(IEnumerable<string> lines){
+    return lines
+      .Select(line => line.ToCharArray().Where(c => !char.IsWhiteSpace(c)).ToArray())
+      .ToArray();
+  }
 
   [Fact]
   public void XmaxCellCountTest(){
