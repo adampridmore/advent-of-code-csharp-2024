@@ -21,10 +21,9 @@ public class Day04
   private static bool CheckXmasInDirection(char[][] grid, Position position, Func<Position, int, Position> positionModifier)
   {
     var toMatch = new List<(char, Position)> {
-      ('X', positionModifier(position,0)),
-      ('M', positionModifier(position,1)),
-      ('A', positionModifier(position,2)),
-      ('S', positionModifier(position,3))
+      ('M', positionModifier(position,-1)),
+      ('A', positionModifier(position,0)),
+      ('S', positionModifier(position,1))
     };
 
     return !toMatch.Any(match=>{
@@ -34,33 +33,31 @@ public class Day04
     });
   }
 
-  public static int XmasCellCount(char[][] grid, Position p)
+  public static bool IsXmasCell(char[][] grid, Position p)
   {
     bool[] results = [
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X + distance , p.Y            )), // Right   - OK
       CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X + distance , p.Y + distance )), // Down and Right - OK
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X            , p.Y + distance )), // Down
       CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X - distance , p.Y + distance )), // Down and left
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X - distance , p.Y            )), // left
       CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X - distance , p.Y - distance )), // left and up
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X            , p.Y - distance )), // up
       CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X + distance , p.Y - distance )), // up and right
     ];
 
-    return results.Count(r => r);
+    var count = results.Count(r => r);
+
+    return (count == 2);
   }
 
   public static int CountXmas(char[][] grid)
-    {
-      var count = 
-        grid.Select((line, yIndex) => {
-          return line.Select((cell, xIndex) => {
-            return XmasCellCount(grid, new Position(xIndex,yIndex));
-          }).Sum();
+  {
+    var count = 
+      grid.Select((line, yIndex) => {
+        return line.Select((cell, xIndex) => {
+          return (IsXmasCell(grid, new Position(xIndex,yIndex)))?1:0;
         }).Sum();
+      }).Sum();
 
-      return count;
-    }
+    return count;
+  }
 
   
   private static char[][] LinesToChars(IEnumerable<string> lines){
