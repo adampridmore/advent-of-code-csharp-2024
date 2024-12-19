@@ -27,66 +27,6 @@ MXMXAXMASX";
 
   public static readonly string InputFilename = @"../../../Day04_input.txt";
 
-  public record Position(int X, int Y);
-
-  public static char GetCellValue(char[][] grid, Position position)
-  {
-    if (
-      position.X < 0 || 
-      position.X >= grid[0].Length || 
-      position.Y < 0 || 
-      position.Y >= grid.Length)
-    {
-      return ' ';
-    }
-
-    return grid[position.Y][position.X];
-  }
-
-  private static bool CheckXmasInDirection(char[][] grid, Position position, Func<Position, int, Position> positionModifier)
-  {
-    var toMatch = new List<(char, Position)> {
-      ('X', positionModifier(position,0)),
-      ('M', positionModifier(position,1)),
-      ('A', positionModifier(position,2)),
-      ('S', positionModifier(position,3))
-    };
-
-    return !toMatch.Any(match=>{
-      var letter = match.Item1;
-      var p = match.Item2;
-      return GetCellValue(grid, p) != letter;
-    });
-  }
-
-  private static int XmasCellCount(char[][] grid, Position p)
-  {
-    bool[] results = [
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X + distance , p.Y            )), // Right   - OK
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X + distance , p.Y + distance )), // Down and Right - OK
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X            , p.Y + distance )), // Down
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X - distance , p.Y + distance )), // Down and left
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X - distance , p.Y            )), // left
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X - distance , p.Y - distance )), // left and up
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X            , p.Y - distance )), // up
-      CheckXmasInDirection(grid, p, (p,distance) => new Position(p.X + distance , p.Y - distance )), // up and right
-    ];
-
-    return results.Count(r => r);
-  }
-
-  private static int CountXmas(char[][] grid)
-    {
-      var count = 
-        grid.Select((line, yIndex) => {
-          return line.Select((cell, xIndex) => {
-            return XmasCellCount(grid, new Position(xIndex,yIndex));
-          }).Sum();
-        }).Sum();
-
-      return count;
-    }
-
   [Fact]
   public void GetCellValueTest()
   {
@@ -95,15 +35,15 @@ MXMXAXMASX";
       ['C','D']
     ];
 
-    Assert.Equal('A', GetCellValue(cells, new Position(0, 0)));
-    Assert.Equal('B', GetCellValue(cells, new Position(1, 0)));
-    Assert.Equal('C', GetCellValue(cells, new Position(0, 1)));
-    Assert.Equal('D', GetCellValue(cells, new Position(1, 1)));
+    Assert.Equal('A', Day04.GetCellValue(cells, new Day04.Position(0, 0)));
+    Assert.Equal('B', Day04.GetCellValue(cells, new Day04.Position(1, 0)));
+    Assert.Equal('C', Day04.GetCellValue(cells, new Day04.Position(0, 1)));
+    Assert.Equal('D', Day04.GetCellValue(cells, new Day04.Position(1, 1)));
 
-    Assert.Equal(' ', GetCellValue(cells, new Position(-1, 0)));
-    Assert.Equal(' ', GetCellValue(cells, new Position(0, -1)));
-    Assert.Equal(' ', GetCellValue(cells, new Position(2, 0)));
-    Assert.Equal(' ', GetCellValue(cells, new Position(0, 2)));
+    Assert.Equal(' ', Day04.GetCellValue(cells, new Day04.Position(-1, 0)));
+    Assert.Equal(' ', Day04.GetCellValue(cells, new Day04.Position(0, -1)));
+    Assert.Equal(' ', Day04.GetCellValue(cells, new Day04.Position(2, 0)));
+    Assert.Equal(' ', Day04.GetCellValue(cells, new Day04.Position(0, 2)));
   }
 
   [Fact]
@@ -111,7 +51,7 @@ MXMXAXMASX";
   {
     char[][] grid = LoadGrid();
 
-    Assert.Equal(18, CountXmas(grid));
+    Assert.Equal(18, Day04.CountXmas(grid));
   }
 
   [Fact]
@@ -121,7 +61,7 @@ MXMXAXMASX";
     
     char[][] grid = LinesToChars(lines);
 
-    Assert.Equal(2613, CountXmas(grid));
+    Assert.Equal(2613, Day04.CountXmas(grid));
   }
 
   private static char[][] LoadGrid()
@@ -140,13 +80,13 @@ MXMXAXMASX";
   [Fact]
   public void XmaxCellCountTest(){
     var grid = LoadGrid();
-    Assert.Equal(0, XmasCellCount(grid, new Position(0,0)));
+    Assert.Equal(0, Day04.XmasCellCount(grid, new Day04.Position(0,0)));
 
-    Assert.Equal(1, XmasCellCount(grid, new Position(4,0)));
-    Assert.Equal(1, XmasCellCount(grid, new Position(5,0)));
-    Assert.Equal(2, XmasCellCount(grid, new Position(6,4)));
-    Assert.Equal(2, XmasCellCount(grid, new Position(6,4)));
+    Assert.Equal(1, Day04.XmasCellCount(grid, new Day04.Position(4,0)));
+    Assert.Equal(1, Day04.XmasCellCount(grid, new Day04.Position(5,0)));
+    Assert.Equal(2, Day04.XmasCellCount(grid, new Day04.Position(6,4)));
+    Assert.Equal(2, Day04.XmasCellCount(grid, new Day04.Position(6,4)));
 
-    Assert.Equal(3, XmasCellCount(grid, new Position(5,9)));
+    Assert.Equal(3, Day04.XmasCellCount(grid, new Day04.Position(5,9)));
   }
 }
