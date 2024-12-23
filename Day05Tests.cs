@@ -40,7 +40,6 @@ public class Day05Tests
 
   public static readonly string InputFilename = @"../../../Day05_input.txt";
 
-
   public static IDictionary<int, List<int>> ParseRules(IEnumerable<string> lines)
   {
     return lines
@@ -106,8 +105,23 @@ public class Day05Tests
     }
   }
 
-  [Fact]
-  public void Example_Part1()
+  public static int Solver(IEnumerable<string> lines){
+    
+    var (pageOrderingRules, pageNumbersUpdates) = SplitInput(lines);
+
+    var rules = ParseRules(pageOrderingRules);
+    var updates = ParseUpdate(pageNumbersUpdates).ToList();
+
+    return
+      updates
+        .Select(update=>ToUpdateValue(update, rules))
+        .Sum()
+        ;
+  }
+
+
+[Fact]
+  public void ToUpdateValueTests()
   {
     var lines = _testInput
       .Split(Environment.NewLine)
@@ -120,15 +134,25 @@ public class Day05Tests
 
     Assert.Equal(61, ToUpdateValue(updates[0], rules));
     Assert.Equal(0, ToUpdateValue(updates[4], rules));
+  }
 
-    var answers = 
-      updates
-        .Select(update=>ToUpdateValue(update, rules))
-        ;
+  [Fact]
+  public void Example_Part1()
+  {
+    var lines = _testInput
+      .Split(Environment.NewLine)
+      ;
 
-    Assert.Equal([61,53, 29, 0, 0, 0], answers.ToList());
+   Assert.Equal(143, Solver(lines));
+  }
+  
+  
+  [Fact]
+  public void RealData_Part1()
+  {
+    var lines = File.ReadAllLines(InputFilename);
 
-    Assert.Equal(143, answers.Sum());
+   Assert.Equal(5651, Solver(lines));
   }
 
   [Fact]
