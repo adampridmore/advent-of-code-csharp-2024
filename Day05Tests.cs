@@ -1,10 +1,3 @@
-using System.Globalization;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Transactions;
-using Microsoft.VisualBasic;
-using Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework;
-
 namespace advent_of_code_csharp_2024;
 
 public class Day05Tests
@@ -43,52 +36,51 @@ public class Day05Tests
   public static IDictionary<int, List<int>> ParseRules(IEnumerable<string> lines)
   {
     return lines
-        .Select(line => {
-          var parts = line.Split('|');
-          return (Int32.Parse(parts[0]), Int32.Parse(parts[1]));
-        })
-        .GroupBy(x=>x.Item1)
-        .ToDictionary(x=>x.Key, x=>x.Select(y=>y.Item2).ToList())
-        ;
+      .Select(line =>
+      {
+        var parts = line.Split('|');
+        return (int.Parse(parts[0]), int.Parse(parts[1]));
+      })
+      .GroupBy(x => x.Item1)
+      .ToDictionary(x => x.Key, x => x.Select(y => y.Item2).ToList());
   }
 
-  public static IEnumerable<List<int>> ParseUpdate(IEnumerable<string> lines){
+  public static IEnumerable<List<int>> ParseUpdate(IEnumerable<string> lines)
+  {
     return lines
-      .Select(line => {
+      .Select(line =>
+      {
         return line
           .Split(",")
-          .Select(text=> int.Parse(text))
+          .Select(text => int.Parse(text))
           .ToList();
-        });
+      });
   }
 
-  public static (IEnumerable<string>, IEnumerable<string>) SplitInput(IEnumerable<string> lines){
-    var pageOrderingRules = lines
-      .Where(line => line.Contains('|'));
+  public static (IEnumerable<string>, IEnumerable<string>) SplitInput(IEnumerable<string> lines)
+  {
+    var pageOrderingRules = lines.Where(line => line.Contains('|'));
 
-    var pageNumbersUpdates = lines
-      .Where(line => line.Contains(','));
+    var pageNumbersUpdates = lines.Where(line => line.Contains(','));
 
     return (pageOrderingRules, pageNumbersUpdates);
   }
 
-  public static bool IsRuleOk(List<int> numberRules, List<int> remainingPages){
-    return remainingPages
-      .All(remainingPage => numberRules.Contains(remainingPage))
-      ;
+  public static bool IsRuleOk(List<int> numberRules, List<int> remainingPages)
+  {
+    return remainingPages.All(numberRules.Contains);
   }
 
-  public static bool IsUpdateValid(List<int> update, IDictionary<int, List<int>> rules){
-
-    for (int i = 1; i < update.Count ; i++){
+  public static bool IsUpdateValid(List<int> update, IDictionary<int, List<int>> rules)
+  {
+    for (int i = 1; i < update.Count; i++)
+    {
       var currentPageNumber = update[i];
-      
-      List<int> currentPageRules;
-      if (rules.TryGetValue(currentPageNumber, out currentPageRules)){
+      if (rules.TryGetValue(currentPageNumber, out List<int>? currentPageRules))
+      {
         var previousPages = update.Take(i).ToList();
-        if (previousPages.Any(previousPage=>{
-          return currentPageRules.Contains(previousPage);
-        })){
+        if (previousPages.Any(previousPage => currentPageRules.Contains(previousPage)))
+        {
           return false;
         }
       }
@@ -97,41 +89,36 @@ public class Day05Tests
     return true;
   }
 
-  public static int ToUpdateValue(List<int> update, IDictionary<int, List<int>> rules){
-    if (IsUpdateValid(update, rules)){
-      return update[update.Count/2];
-    } else {
+  public static int ToUpdateValue(List<int> update, IDictionary<int, List<int>> rules)
+  {
+    if (IsUpdateValid(update, rules))
+    {
+      return update[update.Count / 2];
+    }
+    else
+    {
       return 0;
     }
   }
 
-  public static int Solver(IEnumerable<string> lines){
-    
+  public static int Solver(IEnumerable<string> lines)
+  {
     var (pageOrderingRules, pageNumbersUpdates) = SplitInput(lines);
-
     var rules = ParseRules(pageOrderingRules);
     var updates = ParseUpdate(pageNumbersUpdates).ToList();
-
-    return
-      updates
-        .Select(update=>ToUpdateValue(update, rules))
-        .Sum()
-        ;
+    return updates
+        .Select(update => ToUpdateValue(update, rules))
+        .Sum();
   }
 
-
-[Fact]
+  [Fact]
   public void ToUpdateValueTests()
   {
-    var lines = _testInput
-      .Split(Environment.NewLine)
-      ;
+    var lines = _testInput.Split(Environment.NewLine);
 
     var (pageOrderingRules, pageNumbersUpdates) = SplitInput(lines);
-
     var rules = ParseRules(pageOrderingRules);
     var updates = ParseUpdate(pageNumbersUpdates).ToList();
-
     Assert.Equal(61, ToUpdateValue(updates[0], rules));
     Assert.Equal(0, ToUpdateValue(updates[4], rules));
   }
@@ -139,39 +126,34 @@ public class Day05Tests
   [Fact]
   public void Example_Part1()
   {
-    var lines = _testInput
-      .Split(Environment.NewLine)
-      ;
+    var lines = _testInput.Split(Environment.NewLine);
 
-   Assert.Equal(143, Solver(lines));
+    Assert.Equal(143, Solver(lines));
   }
-  
-  
+
+
   [Fact]
   public void RealData_Part1()
   {
     var lines = File.ReadAllLines(InputFilename);
-
-   Assert.Equal(5651, Solver(lines));
+    Assert.Equal(5651, Solver(lines));
   }
 
   [Fact]
-  public void ParseRulesTest(){
+  public void ParseRulesTest()
+  {
     var lines = _testInput.Split(Environment.NewLine);
-
     var (pageOrderingRules, _) = SplitInput(lines);
-
     var rules = ParseRules(pageOrderingRules);
-    Assert.Equal(rules[97], [13,61,47,29,53,75]);
+    Assert.Equal(rules[97], [13, 61, 47, 29, 53, 75]);
   }
 
   [Fact]
-  public void ParseUpdatesTest(){
+  public void ParseUpdatesTest()
+  {
     var lines = _testInput.Split(Environment.NewLine);
-
     var (_, pageNumbersUpdates) = SplitInput(lines);
-
     var updates = ParseUpdate(pageNumbersUpdates);
-    Assert.Equal(updates.First(), [75,47,61,53,29]);
+    Assert.Equal(updates.First(), [75, 47, 61, 53, 29]);
   }
 }
