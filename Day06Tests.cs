@@ -5,6 +5,8 @@ namespace advent_of_code_csharp_2024;
 
 public class Day06Tests
 {
+  
+  public static readonly string InputFilename = @"../../../Day06_input.txt";
   private static string _testInput = @"....#.....
 .........#
 ..........
@@ -39,7 +41,12 @@ public class Day06Tests
       _cells = cells;
     }
 
-    public static Cells FromLines(string lines)
+    public static Cells FromText(string lines)
+    {
+      return new Cells(LoadCells(lines));
+    }
+
+    public static Cells FromLines(IEnumerable<string> lines)
     {
       return new Cells(LoadCells(lines));
     }
@@ -53,10 +60,13 @@ public class Day06Tests
       return x.Item1;
     }
 
-    private static char[][] LoadCells(string lines)
+    private static char[][] LoadCells(string text){
+      return LoadCells(text.Split(Environment.NewLine));
+    }
+
+    private static char[][] LoadCells(IEnumerable<string> lines)
     {
       return lines
-          .Split(Environment.NewLine)
           .Select(line => line.ToCharArray().Where(c => ".#^".Contains(c)).ToArray())
           .Where(line => line.Length > 0)
           .ToArray();
@@ -110,6 +120,8 @@ public class Day06Tests
 
     internal bool Move(Cells cells)
     {
+      // TODO: This methid is a bit messy
+
       var nextPosition = GetNextPosition();
       if (cells.IsOutsideOfBounds(nextPosition))
       {
@@ -162,15 +174,15 @@ public class Day06Tests
     {
       for (var count = 0; Move(cells); count++)
       {
+        Console.Write()
       }
     }
   }
-  public static readonly string InputFilename = @"../../../Day06_input.txt";
 
   [Fact]
   public void LoadCellsTest()
   {
-    var cells = Cells.FromLines(_testInput);
+    var cells = Cells.FromText(_testInput);
 
     Assert.Equal("....#.....".ToCharArray(), cells[0]);
   }
@@ -178,7 +190,7 @@ public class Day06Tests
   [Fact]
   public void GetStartPositionTest()
   {
-    var cells = Cells.FromLines(_testInput);
+    var cells = Cells.FromText(_testInput);
 
     var startCellPosition = cells.GetStartPosition();
 
@@ -188,7 +200,7 @@ public class Day06Tests
   [Fact]
   public void GetCellAtPosition()
   {
-    var cells = Cells.FromLines(_testInput);
+    var cells = Cells.FromText(_testInput);
 
     char cell = cells.GetCell(new Position(4, 6));
 
@@ -198,7 +210,7 @@ public class Day06Tests
   [Fact]
   public void MoveAndTurnAFewTimeTest()
   {
-    var cells = Cells.FromLines(_testInput);
+    var cells = Cells.FromText(_testInput);
 
     var startCellPosition = cells.GetStartPosition();
 
@@ -224,7 +236,7 @@ public class Day06Tests
   [Fact]
   public void Example_partI()
   {
-    var cells = Cells.FromLines(_testInput);
+    var cells = Cells.FromText(_testInput);
 
     var startCellPosition = cells.GetStartPosition();
 
@@ -233,5 +245,20 @@ public class Day06Tests
     guard.DoRun(cells);
 
     Assert.Equal(41,cells.VisitCount());
+  }
+
+  [Fact]
+  public void Real_partI()
+  {
+    var cells = Cells.FromLines(File.ReadLines(InputFilename));
+
+    var startCellPosition = cells.GetStartPosition();
+
+    Guard guard = new Guard(startCellPosition, Direction.Up);
+
+    guard.DoRun(cells);
+
+    // To Low...
+    Assert.Equal(4558,cells.VisitCount());
   }
 }
