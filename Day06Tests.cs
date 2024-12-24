@@ -143,7 +143,6 @@ public class Day06Tests
       return true;
     }
 
-
     private void Turn()
     {
       Direction = Direction switch
@@ -171,11 +170,8 @@ public class Day06Tests
     public void DoRun(Cells cells)
     {
       cells.SetTrace(Position);
-      
-      for (var count = 0; Move(cells); count++)
-      {
-        
-      }
+
+      do{ } while(Move(cells));
     }
   }
 
