@@ -1,6 +1,3 @@
-using System.Net;
-using System.Transactions;
-
 namespace advent_of_code_csharp_2024;
 
 public class Day06Tests
@@ -18,6 +15,11 @@ public class Day06Tests
 #.........
 ......#...
 ";
+
+  private static string _testInput2 = @"###
+#.#
+...
+.^.";
 
   // Start cell x : 4
   // Start cell y : 6
@@ -79,6 +81,10 @@ public class Day06Tests
 
     internal bool IsObstruction(Position p)
     {
+      if (IsOutsideOfBounds(p)){
+        return false;
+      }
+
       return GetCell(p) == '#';
     }
 
@@ -120,28 +126,20 @@ public class Day06Tests
 
     internal bool Move(Cells cells)
     {
-      // TODO: This methid is a bit messy
+      Position nextPosition;
+      for(nextPosition = GetNextPosition(); cells.IsObstruction(nextPosition); Turn(), nextPosition = GetNextPosition()){
+      }
 
-      var nextPosition = GetNextPosition();
-      if (cells.IsOutsideOfBounds(nextPosition))
-      {
+      if (cells.IsOutsideOfBounds(nextPosition)){
         return false;
       }
 
-      if (cells.IsObstruction(nextPosition))
-      {
-        Turn();
-        nextPosition = GetNextPosition();
-        if (cells.IsOutsideOfBounds(nextPosition))
-        {
-          return false;
-        }
-      }
-
       Position = nextPosition;
-
+      
+      Console.WriteLine($"Direction: {Direction} {Position}");
+      
       cells.SetTrace(Position);
-
+      
       return true;
     }
 
@@ -172,9 +170,11 @@ public class Day06Tests
 
     public void DoRun(Cells cells)
     {
+      cells.SetTrace(Position);
+      
       for (var count = 0; Move(cells); count++)
       {
-        Console.Write()
+        
       }
     }
   }
@@ -259,6 +259,19 @@ public class Day06Tests
     guard.DoRun(cells);
 
     // To Low...
-    Assert.Equal(4558,cells.VisitCount());
+    Assert.Equal(4559,cells.VisitCount());
+  }
+
+  [Fact]
+  public void Edge_case_1(){
+    var cells = Cells.FromText(_testInput2);
+
+    var startCellPosition = cells.GetStartPosition();
+
+    Guard guard = new Guard(startCellPosition, Direction.Up);
+
+    guard.DoRun(cells);
+
+    Assert.Equal(3,cells.VisitCount());
   }
 }
