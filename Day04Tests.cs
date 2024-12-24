@@ -84,12 +84,9 @@ MXMXAXMASX";
   [Fact]
   public void TestExample_part2()
   {
-    System.Console.WriteLine("TestExample_part2 Start");
     char[][] grid = LoadGrid();
 
     Assert.Equal(9, Day04.CountXmas(grid));
-
-    System.Console.WriteLine("TestExample_part2 End");
   }
 
   [Fact]
