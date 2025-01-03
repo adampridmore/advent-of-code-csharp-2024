@@ -116,7 +116,7 @@ public class Guard
 
     Position = nextPosition;
 
-    Console.WriteLine($"Direction: {Direction} {Position}");
+    // Console.WriteLine($"Direction: {Direction} {Position}");
 
     cells.SetTrace(Position);
 
