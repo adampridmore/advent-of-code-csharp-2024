@@ -9,7 +9,7 @@ public class CombinationsTests(ITestOutputHelper testOutputHelper)
     {
         var values = new []{ true, false };
 
-        var arraySize = 2; // Example size of the boolean array
+        var arraySize = 2;
         var combinations = Combinations.GenerateCombinations(arraySize, values).ToList();
 
         foreach (var combination in combinations)
