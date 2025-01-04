@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Xunit.Abstractions;
 
 namespace advent_of_code_csharp_2024;
@@ -5,7 +6,8 @@ namespace advent_of_code_csharp_2024;
 public class Day07Tests(ITestOutputHelper testOutputHelper)
 {
   public static readonly string InputFilename = @"../../../Day07_input.txt";
-  private static string _testInput = @"190: 10 19
+
+  private const string TestInput = @"190: 10 19
 3267: 81 40 27
 83: 17 5
 156: 15 6
@@ -15,18 +17,18 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
 21037: 9 7 18 13
 292: 11 6 16 20";
 
-  public record Equation(int TestValue, int[] Numbers)
+  public record Equation(long TestValue, long[] Numbers)
   {
     public enum Operator
     {
       Add,
       Multiply
-    };
+    }
 
     // TODO: This should be private
-    public static int ApplyOperatorsToNumbers(Operator[] operators, int[] Numbers)
+    public static long ApplyOperatorsToNumbers(Operator[] operators, long[] numbers)
     {
-      var product = Numbers
+      var product = numbers
         .Select((number, index) => (number, index))
         .Aggregate((a, b) =>
       {
@@ -57,11 +59,11 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
   public static Equation ParseRow(string testLine)
   {
     var split = testLine.Split(":");
-    var testValue = int.Parse(split[0]);
+    var testValue = long.Parse(split[0]);
 
     var numbers = split[1]
       .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-      .Select(int.Parse)
+      .Select(long.Parse)
       .ToArray();
 
     return new Equation(testValue, numbers);
@@ -75,9 +77,9 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
   [Fact]
   public void ParseInputTest()
   {
-    var sr = new StringReader(_testInput);
+    var sr = new StringReader(TestInput);
 
-    var equations = ParseLines(_testInput.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)).ToArray();
+    var equations = ParseLines(TestInput.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)).ToArray();
 
     Assert.Equal(9, equations.Count());
     Assert.Equal(190, equations[0].TestValue);
@@ -127,34 +129,42 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
     var total = Equation.ApplyOperatorsToNumbers(operators, equation.Numbers);
     testOutputHelper.WriteLine($"Calculated Total: {total}");
   }
+
+  public long Solver(string lines)
+  {
+    return
+      lines
+        .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+        .Select(ParseRow)
+        .Where(x => x.IsValid())
+        .Select(x => x.TestValue)
+        .Sum();
+  }
   
   [Fact]
   public void Example_partI()
   {
     var x =
-        _testInput
+        TestInput
           .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
           .Select(ParseRow)
           .Where(x => x.IsValid())
           .Select(x => x.TestValue)
-          .Sum()
-          ;
-    
-    testOutputHelper.WriteLine($"Total: {x}");
+          .Sum();
     
     Assert.Equal(3749, x);
   }
 
-  // [Fact]
-  // public void ReadData_PartI()
-  // {
-  //   var answer = 
-  //       File.ReadLines(InputFilename)
-  //       .Select(ParseRow)
-  //       .Where(x => x.IsValid())
-  //       .Select(x => x.TestValue)
-  //       .Sum();
-  //
-  //   Assert.Equal(1, answer);
-  // }
+  [Fact]
+  public void ReadData_PartI()
+  {
+    var answer = 
+        File.ReadLines(InputFilename)
+        .Select(ParseRow)
+        .Where(x => x.IsValid())
+        .Select(x => x.TestValue)
+        .Sum();
+  
+    Assert.Equal(3598800864292L, answer);
+  }
 }
