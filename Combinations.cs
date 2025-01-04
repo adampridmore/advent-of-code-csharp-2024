@@ -4,32 +4,27 @@ namespace advent_of_code_csharp_2024;
 
 public static class Combinations
 {
-    public static IEnumerable<bool[]> GenerateCombinations(int size)
+    public static IEnumerable<T[]> GenerateCombinations<T>(int size, T[] values)
     {
-        return GenerateCombinationsRecursive(new bool[size], 0);
+        return GenerateCombinationsRecursive(new T[size], 0, values);
     }
 
-    static IEnumerable<bool[]> GenerateCombinationsRecursive(bool[] current, int position)
+    static IEnumerable<T[]> GenerateCombinationsRecursive<T>(T[] current, int position, T[] values)
     {
         if (position == current.Length)
         {
             // Yield the current combination
-            yield return (bool[])current.Clone();
+            yield return (T[])current.Clone();
             yield break;
         }
 
-        // Set the current position to false and recurse
-        current[position] = false;
-        foreach (var combination in GenerateCombinationsRecursive(current, position + 1))
+        foreach (var value in values)
         {
-            yield return combination;
-        }
-
-        // Set the current position to true and recurse
-        current[position] = true;
-        foreach (var combination in GenerateCombinationsRecursive(current, position + 1))
-        {
-            yield return combination;
+            current[position] = value;
+            foreach (var combination in GenerateCombinationsRecursive(current, position + 1, values))
+            {
+                yield return combination;
+            }    
         }
     }
 }

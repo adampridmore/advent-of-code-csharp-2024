@@ -44,11 +44,12 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
 
     public bool IsValid()
     {
-      var operatorsList = 
+      var values = new[] { Operator.Add,Operator.Multiply };
+
+      var operatorsList =
         Combinations
-          .GenerateCombinations(Numbers.Length - 1)
-          .Select(x => x.Select(y=>y? Operator.Add : Operator.Multiply));
-        
+          .GenerateCombinations(Numbers.Length - 1, values);
+          
       return operatorsList
         .Select(operators => ApplyOperatorsToNumbers(operators.ToArray(), Numbers))
         .Any(actualValue => actualValue == TestValue);
