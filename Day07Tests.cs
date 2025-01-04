@@ -24,9 +24,8 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
       Add,
       Multiply
     }
-
-    // TODO: This should be private
-    public static long ApplyOperatorsToNumbers(Operator[] operators, long[] numbers)
+    
+    private static long ApplyOperatorsToNumbers(Operator[] operators, long[] numbers)
     {
       var product = numbers
         .Select((number, index) => (number, index))
@@ -73,6 +72,16 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
   {
     return lines.Select(ParseRow);
   }
+  
+  public static long Solver(IEnumerable<string> lines)
+  {
+    return
+      lines
+        .Select(ParseRow)
+        .Where(x => x.IsValid())
+        .Select(x => x.TestValue)
+        .Sum();
+  }
 
   [Fact]
   public void ParseInputTest()
@@ -118,53 +127,16 @@ public class Day07Tests(ITestOutputHelper testOutputHelper)
     Assert.False(new Equation(1, [2]).IsValid());
     Assert.False(new Equation(4, [1,2]).IsValid());
   }
-
-  [Fact]
-  public void Example_Line1()
-  {
-    var equation = ParseRow("3267: 81 40 27");
-    testOutputHelper.WriteLine($"Equation: {equation.IsValid()}");
-
-    var operators = new[] { Equation.Operator.Add, Equation.Operator.Multiply };
-    var total = Equation.ApplyOperatorsToNumbers(operators, equation.Numbers);
-    testOutputHelper.WriteLine($"Calculated Total: {total}");
-  }
-
-  public long Solver(string lines)
-  {
-    return
-      lines
-        .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-        .Select(ParseRow)
-        .Where(x => x.IsValid())
-        .Select(x => x.TestValue)
-        .Sum();
-  }
   
   [Fact]
   public void Example_partI()
   {
-    var x =
-        TestInput
-          .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-          .Select(ParseRow)
-          .Where(x => x.IsValid())
-          .Select(x => x.TestValue)
-          .Sum();
-    
-    Assert.Equal(3749, x);
+    Assert.Equal(3749, Solver( TestInput.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)));
   }
 
   [Fact]
   public void ReadData_PartI()
   {
-    var answer = 
-        File.ReadLines(InputFilename)
-        .Select(ParseRow)
-        .Where(x => x.IsValid())
-        .Select(x => x.TestValue)
-        .Sum();
-  
-    Assert.Equal(3598800864292L, answer);
+    Assert.Equal(3598800864292L, Solver(File.ReadLines(InputFilename)));
   }
 }
