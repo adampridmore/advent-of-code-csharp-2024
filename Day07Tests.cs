@@ -1,11 +1,8 @@
-using System.Collections;
+using Xunit.Abstractions;
 
 namespace advent_of_code_csharp_2024;
 
-using System.Collections.Specialized;
-using advent_of_code_csharp_2024.Day06;
-
-public class Day07Tests
+public class Day07Tests(ITestOutputHelper testOutputHelper)
 {
   public static readonly string InputFilename = @"../../../Day07_input.txt";
   private static string _testInput = @"190: 10 19
@@ -20,19 +17,20 @@ public class Day07Tests
 
   public record Equation(int TestValue, int[] Numbers)
   {
-    enum Operator
+    public enum Operator
     {
       Add,
       Multiply
     };
 
-    private static int ApplyOperatorsToNumbers(Operator[] operators, int[] Numbers)
+    // TODO: This should be private
+    public static int ApplyOperatorsToNumbers(Operator[] operators, int[] Numbers)
     {
       var product = Numbers
         .Select((number, index) => (number, index))
         .Aggregate((a, b) =>
       {
-        return operators[a.index] switch
+        return operators[b.index-1] switch
         {
           Operator.Add => (a.number + b.number, a.index),
           Operator.Multiply => (a.number * b.number, a.index),
@@ -43,23 +41,13 @@ public class Day07Tests
       return product.number;
     }
 
-    public List<T> CreateFilledArray<T>(T t, int count){
-      var array = new T[count];
-      Array.Fill(array, t);
-      return array.ToList();
-    }
-
     public bool IsValid()
     {
-      // var maxSize = 3;
-      // var bv = new BitArray(new int[2]);
-
-      // TODO: Get all combinations of add and multiply
-      var operatorsList = new List<List<Operator>> {
-        CreateFilledArray(Operator.Add, Numbers.Length),
-        CreateFilledArray(Operator.Multiply, Numbers.Length)
-      };
-
+      var operatorsList = 
+        Combinations
+          .GenerateCombinations(Numbers.Length - 1)
+          .Select(x => x.Select(y=>y? Operator.Add : Operator.Multiply));
+        
       return operatorsList
         .Select(operators => ApplyOperatorsToNumbers(operators.ToArray(), Numbers))
         .Any(actualValue => actualValue == TestValue);
@@ -114,12 +102,59 @@ public class Day07Tests
     Assert.True(new Equation(3, [1, 2]).IsValid());
     Assert.True(new Equation(9, [2, 3, 4]).IsValid());
   }
+  
+  [Fact]
+  public void IsValidWhenSumOrProduct()
+  {
+    Assert.True(new Equation(9, [2, 3, 4]).IsValid());
+    Assert.True(new Equation(24, [2, 3, 4]).IsValid());
+  }
 
   [Fact]
   public void IsNotValid()
   {
-    ;
-    var equation = new Equation(1, [2]);
-    Assert.False(equation.IsValid());
+    Assert.False(new Equation(1, [2]).IsValid());
+    Assert.False(new Equation(4, [1,2]).IsValid());
   }
+
+  [Fact]
+  public void Example_Line1()
+  {
+    var equation = ParseRow("3267: 81 40 27");
+    testOutputHelper.WriteLine($"Equation: {equation.IsValid()}");
+
+    var operators = new[] { Equation.Operator.Add, Equation.Operator.Multiply };
+    var total = Equation.ApplyOperatorsToNumbers(operators, equation.Numbers);
+    testOutputHelper.WriteLine($"Calculated Total: {total}");
+  }
+  
+  [Fact]
+  public void Example_partI()
+  {
+    var x =
+        _testInput
+          .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+          .Select(ParseRow)
+          .Where(x => x.IsValid())
+          .Select(x => x.TestValue)
+          .Sum()
+          ;
+    
+    testOutputHelper.WriteLine($"Total: {x}");
+    
+    Assert.Equal(3749, x);
+  }
+
+  // [Fact]
+  // public void ReadData_PartI()
+  // {
+  //   var answer = 
+  //       File.ReadLines(InputFilename)
+  //       .Select(ParseRow)
+  //       .Where(x => x.IsValid())
+  //       .Select(x => x.TestValue)
+  //       .Sum();
+  //
+  //   Assert.Equal(1, answer);
+  // }
 }
