@@ -38,16 +38,16 @@ public class Day16
             int nr = r + sign * Dirs[d].dr, nc = c + sign * Dirs[d].dc;
             if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] != '#')
             {
-                long nc2 = cost + 1;
-                if (nc2 < dist[nr, nc, d]) { dist[nr, nc, d] = nc2; pq.Enqueue((nr, nc, d), nc2); }
+                long newCost = cost + 1;
+                if (newCost < dist[nr, nc, d]) { dist[nr, nc, d] = newCost; pq.Enqueue((nr, nc, d), newCost); }
             }
 
             // Turn (same cost in both directions)
             for (int td = 0; td < 4; td++)
             {
                 if (td == d) continue;
-                long nc2 = cost + TurnCost(d, td);
-                if (nc2 < dist[r, c, td]) { dist[r, c, td] = nc2; pq.Enqueue((r, c, td), nc2); }
+                long newCost = cost + TurnCost(d, td);
+                if (newCost < dist[r, c, td]) { dist[r, c, td] = newCost; pq.Enqueue((r, c, td), newCost); }
             }
         }
         return dist;

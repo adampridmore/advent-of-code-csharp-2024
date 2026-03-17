@@ -4,8 +4,6 @@ public class Day10
 {
     public static readonly string InputFilename = @"Day10_input.txt";
 
-    private record Position(int X, int Y);
-
     private static int[][] Parse(string[] lines) =>
         lines.Select(l => l.Select(c => c - '0').ToArray()).ToArray();
 

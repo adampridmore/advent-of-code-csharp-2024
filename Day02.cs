@@ -4,82 +4,19 @@ public class Day02
 {
     public static readonly string InputFilename = @"Day02_input.txt";
 
-    public static List<int> ParseLine(string line)
+    public static List<int> ParseLine(string line) =>
+        line.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+
+    public static bool IsSafe(IEnumerable<int> levels)
     {
-        return line.Split(" ", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(int.Parse)
-                    .ToList();
-    }
-
-    public enum IsSafeEnum
-    {
-        Increasing,
-        Decreasing,
-        Unsafe
-    }
-
-    public static bool IsSafe(List<int> line)
-    {
-        var lookup =
-            line
-                .Zip(line.Skip(1).ToList(),
-                    (a, b) =>
-                    {
-                        var diff = a - b;
-                        if (diff == 0) return IsSafeEnum.Unsafe;
-                        if (diff < -3) return IsSafeEnum.Unsafe;
-                        if (diff > 3) return IsSafeEnum.Unsafe;
-                        if (diff < 0) return IsSafeEnum.Decreasing;
-                        if (diff > -3) return IsSafeEnum.Increasing;
-                        throw new Exception($"Unexpected difference {diff}");
-                    })
-                .ToLookup(x => x);
-
-        if (lookup.Count == 0)
-        {
-            return true;
-        }
-
-        return IsIncreasingOrDecreasingOnly(lookup);
+        var diffs = levels.Zip(levels.Skip(1), (a, b) => b - a).ToList();
+        return diffs.All(d => d is >= 1 and <= 3) || diffs.All(d => d is >= -3 and <= -1);
     }
 
     public static bool IsSafeTolerant(List<int> line)
     {
-        if (IsSafe(line))
-        {
-            return true;
-        }
-
-        for (int i = 0; i < line.Count; i++)
-        {
-            var removeLevel = new List<int>(line);
-            removeLevel.RemoveAt(i);
-            if (IsSafe(removeLevel))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static bool IsIncreasingOrDecreasingOnly(ILookup<IsSafeEnum, IsSafeEnum> lookup)
-    {
-        if (lookup.Contains(IsSafeEnum.Unsafe))
-        {
-            return false;
-        }
-
-        if (lookup.Contains(IsSafeEnum.Decreasing) && !lookup.Contains(IsSafeEnum.Increasing))
-        {
-            return true;
-        }
-
-        if (!lookup.Contains(IsSafeEnum.Decreasing) && lookup.Contains(IsSafeEnum.Increasing))
-        {
-            return true;
-        }
-
-        return false;
+        if (IsSafe(line)) return true;
+        return Enumerable.Range(0, line.Count)
+            .Any(i => IsSafe(line.Where((_, idx) => idx != i)));
     }
 }

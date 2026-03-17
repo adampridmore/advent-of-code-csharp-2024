@@ -11,27 +11,29 @@ public class Day19
         return (patterns, designs);
     }
 
-    private static long CountWays(string design, string[] patterns, Dictionary<string, long> memo)
+    private static long CountWays(string design, string[] patterns)
     {
-        if (design.Length == 0) return 1;
-        if (memo.TryGetValue(design, out long cached)) return cached;
-        long ways = patterns.Sum(p =>
-            design.StartsWith(p) ? CountWays(design[p.Length..], patterns, memo) : 0);
-        memo[design] = ways;
-        return ways;
+        var dp = new long[design.Length + 1];
+        dp[0] = 1;
+        for (int i = 0; i < design.Length; i++)
+        {
+            if (dp[i] == 0) continue;
+            foreach (var p in patterns)
+                if (i + p.Length <= design.Length && design.AsSpan(i, p.Length).SequenceEqual(p))
+                    dp[i + p.Length] += dp[i];
+        }
+        return dp[design.Length];
     }
 
     public static long SolvePart1(string[] lines)
     {
         var (patterns, designs) = Parse(lines);
-        var memo = new Dictionary<string, long>();
-        return designs.Count(d => CountWays(d, patterns, memo) > 0);
+        return designs.Count(d => CountWays(d, patterns) > 0);
     }
 
     public static long SolvePart2(string[] lines)
     {
         var (patterns, designs) = Parse(lines);
-        var memo = new Dictionary<string, long>();
-        return designs.Sum(d => CountWays(d, patterns, memo));
+        return designs.Sum(d => CountWays(d, patterns));
     }
 }

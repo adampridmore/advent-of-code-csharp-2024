@@ -41,7 +41,7 @@ public class Day06Tests
 
     var startCellPosition = cells.GetStartPosition();
 
-    Assert.Equal(new Position(4, 6), startCellPosition);
+    Assert.Equal(new Day06.Position(4, 6), startCellPosition);
   }
 
   [Fact]
@@ -49,7 +49,7 @@ public class Day06Tests
   {
     var cells = Cells.FromText(_testInput);
 
-    char cell = cells.GetCell(new Position(4, 6));
+    char cell = cells.GetCell(new Day06.Position(4, 6));
 
     Assert.Equal('^', cell);
   }
@@ -65,7 +65,7 @@ public class Day06Tests
 
     guard.Move(cells);
 
-    Assert.Equal(new Position(4, 5), guard.Position);
+    Assert.Equal(new Day06.Position(4, 5), guard.Position);
     Assert.Equal(Direction.Up, guard.Direction);
 
     guard.Move(cells);
@@ -73,11 +73,11 @@ public class Day06Tests
     guard.Move(cells);
     guard.Move(cells);
 
-    Assert.Equal(new Position(4, 1), guard.Position);
+    Assert.Equal(new Day06.Position(4, 1), guard.Position);
 
     guard.Move(cells);
     Assert.Equal(Direction.Right, guard.Direction);
-    Assert.Equal(new Position(5, 1), guard.Position);
+    Assert.Equal(new Day06.Position(5, 1), guard.Position);
   }
 
   [Fact]

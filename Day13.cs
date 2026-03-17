@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace advent_of_code_csharp_2024;
 
 public class Day13
@@ -11,14 +13,10 @@ public class Day13
         var machines = new List<Machine>();
         for (int i = 0; i < lines.Length; i += 4)
         {
-            var a = lines[i].Split(new[] { '+', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var b = lines[i + 1].Split(new[] { '+', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var p = lines[i + 2].Split(new[] { '=', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            machines.Add(new Machine(
-                long.Parse(a[3]), long.Parse(a[5]),
-                long.Parse(b[3]), long.Parse(b[5]),
-                long.Parse(p[2]), long.Parse(p[4])
-            ));
+            var n = lines.Skip(i).Take(3)
+                .SelectMany(l => Regex.Matches(l, @"\d+"))
+                .Select(m => long.Parse(m.Value)).ToArray();
+            machines.Add(new Machine(n[0], n[1], n[2], n[3], n[4], n[5]));
         }
         return machines;
     }

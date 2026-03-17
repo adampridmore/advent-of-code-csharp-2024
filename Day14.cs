@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace advent_of_code_csharp_2024;
 
 public class Day14
@@ -9,8 +11,8 @@ public class Day14
     private static List<Robot> Parse(string[] lines) =>
         lines.Select(line =>
         {
-            var nums = line.Split(new[] { 'p', '=', ' ', 'v', ',' }, StringSplitOptions.RemoveEmptyEntries);
-            return new Robot(int.Parse(nums[0]), int.Parse(nums[1]), int.Parse(nums[2]), int.Parse(nums[3]));
+            var n = Regex.Matches(line, @"-?\d+").Select(m => int.Parse(m.Value)).ToArray();
+            return new Robot(n[0], n[1], n[2], n[3]);
         }).ToList();
 
     private static (int x, int y) Step(Robot r, int t, int W, int H) =>

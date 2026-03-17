@@ -4,8 +4,6 @@ public class Day08
 {
     public static readonly string InputFilename = @"Day08_input.txt";
 
-    public record Position(int X, int Y);
-
     public static Dictionary<char, List<Position>> ParseAntennas(string[] lines)
     {
         var result = new Dictionary<char, List<Position>>();

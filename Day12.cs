@@ -4,8 +4,6 @@ public class Day12
 {
     public static readonly string InputFilename = @"Day12_input.txt";
 
-    private record Position(int X, int Y);
-
     private static bool InBounds(char[][] grid, Position p) =>
         p.X >= 0 && p.X < grid[0].Length && p.Y >= 0 && p.Y < grid.Length;
 
