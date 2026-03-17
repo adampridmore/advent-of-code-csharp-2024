@@ -55,3 +55,8 @@ var operatorsII = Enum.GetValues<Day07.Operator>();
 PrintDay(7,
     () => Day07.Solver(File.ReadLines(Day07.InputFilename), operatorsI),
     () => Day07.Solver(File.ReadLines(Day07.InputFilename), operatorsII));
+
+// Day 08
+PrintDay(8,
+    () => Day08.SolvePart1(File.ReadAllLines(Day08.InputFilename)),
+    () => Day08.SolvePart2(File.ReadAllLines(Day08.InputFilename)));
