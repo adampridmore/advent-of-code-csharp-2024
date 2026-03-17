@@ -80,3 +80,68 @@ PrintDay(11,
 PrintDay(12,
     () => Day12.SolvePart1(File.ReadAllLines(Day12.InputFilename)),
     () => Day12.SolvePart2(File.ReadAllLines(Day12.InputFilename)));
+
+// Day 13
+PrintDay(13,
+    () => Day13.SolvePart1(File.ReadAllLines(Day13.InputFilename)),
+    () => Day13.SolvePart2(File.ReadAllLines(Day13.InputFilename)));
+
+// Day 14
+PrintDay(14,
+    () => Day14.SolvePart1(File.ReadAllLines(Day14.InputFilename)),
+    () => Day14.SolvePart2(File.ReadAllLines(Day14.InputFilename)));
+
+// Day 15
+PrintDay(15,
+    () => Day15.SolvePart1(File.ReadAllLines(Day15.InputFilename)),
+    () => Day15.SolvePart2(File.ReadAllLines(Day15.InputFilename)));
+
+// Day 16
+PrintDay(16,
+    () => Day16.SolvePart1(File.ReadAllLines(Day16.InputFilename)),
+    () => Day16.SolvePart2(File.ReadAllLines(Day16.InputFilename)));
+
+// Day 17
+PrintDay(17,
+    () => Day17.SolvePart1(File.ReadAllLines(Day17.InputFilename)),
+    () => Day17.SolvePart2(File.ReadAllLines(Day17.InputFilename)));
+
+// Day 18
+PrintDay(18,
+    () => Day18.SolvePart1(File.ReadAllLines(Day18.InputFilename)),
+    () => Day18.SolvePart2(File.ReadAllLines(Day18.InputFilename)));
+
+// Day 19
+PrintDay(19,
+    () => Day19.SolvePart1(File.ReadAllLines(Day19.InputFilename)),
+    () => Day19.SolvePart2(File.ReadAllLines(Day19.InputFilename)));
+
+// Day 20
+PrintDay(20,
+    () => Day20.SolvePart1(File.ReadAllLines(Day20.InputFilename)),
+    () => Day20.SolvePart2(File.ReadAllLines(Day20.InputFilename)));
+
+// Day 21
+PrintDay(21,
+    () => Day21.SolvePart1(File.ReadAllLines(Day21.InputFilename)),
+    () => Day21.SolvePart2(File.ReadAllLines(Day21.InputFilename)));
+
+// Day 22
+PrintDay(22,
+    () => Day22.SolvePart1(File.ReadAllLines(Day22.InputFilename)),
+    () => Day22.SolvePart2(File.ReadAllLines(Day22.InputFilename)));
+
+// Day 23
+PrintDay(23,
+    () => Day23.SolvePart1(File.ReadAllLines(Day23.InputFilename)),
+    () => Day23.SolvePart2(File.ReadAllLines(Day23.InputFilename)));
+
+// Day 24
+PrintDay(24,
+    () => Day24.SolvePart1(File.ReadAllLines(Day24.InputFilename)),
+    () => Day24.SolvePart2(File.ReadAllLines(Day24.InputFilename)));
+
+// Day 25
+PrintDay(25,
+    () => Day25.SolvePart1(File.ReadAllLines(Day25.InputFilename)),
+    () => "⭐");
