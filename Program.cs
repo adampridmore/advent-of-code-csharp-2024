@@ -65,3 +65,8 @@ PrintDay(8,
 PrintDay(9,
     () => Day09.SolvePart1(File.ReadAllLines(Day09.InputFilename)),
     () => Day09.SolvePart2(File.ReadAllLines(Day09.InputFilename)));
+
+// Day 10
+PrintDay(10,
+    () => Day10.SolvePart1(File.ReadAllLines(Day10.InputFilename)),
+    () => Day10.SolvePart2(File.ReadAllLines(Day10.InputFilename)));
