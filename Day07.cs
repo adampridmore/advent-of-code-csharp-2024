@@ -8,33 +8,33 @@ public class Day07
 
     public record Equation(long TestValue, long[] Numbers)
     {
-        private static long ApplyOperatorsToNumbers(Operator[] operators, long[] numbers)
+        private static long Concatenation(long a, long b)
         {
-            var product = numbers
-                .Select((number, index) => (number, index))
-                .Aggregate((a, b) =>
-                {
-                    return operators[b.index - 1] switch
-                    {
-                        Operator.Add => (a.number + b.number, a.index),
-                        Operator.Multiply => (a.number * b.number, a.index),
-                        Operator.Concatenation => (Concatenation(a.number, b.number), a.index),
-                        _ => throw new NotImplementedException()
-                    };
-                });
-            return product.number;
+            long multiplier = 1;
+            while (multiplier <= b) multiplier *= 10;
+            return a * multiplier + b;
         }
 
-        private static long Concatenation(long fst, long snd)
-            => long.Parse(fst.ToString() + snd.ToString());
+        private static bool Search(long[] numbers, int index, long current, long target, Operator[] ops)
+        {
+            if (index == numbers.Length) return current == target;
+            if (current > target) return false;
+            foreach (var op in ops)
+            {
+                var next = op switch
+                {
+                    Operator.Add => current + numbers[index],
+                    Operator.Multiply => current * numbers[index],
+                    Operator.Concatenation => Concatenation(current, numbers[index]),
+                    _ => throw new NotImplementedException()
+                };
+                if (Search(numbers, index + 1, next, target, ops)) return true;
+            }
+            return false;
+        }
 
         public bool IsValid(Operator[] supportedOperators)
-        {
-            var operatorsList = Combinations.GenerateCombinations(Numbers.Length - 1, supportedOperators);
-            return operatorsList
-                .Select(ops => ApplyOperatorsToNumbers(ops.ToArray(), Numbers))
-                .Any(actualValue => actualValue == TestValue);
-        }
+            => Search(Numbers, 1, Numbers[0], TestValue, supportedOperators);
     }
 
     public static Equation ParseRow(string line)
