@@ -31,7 +31,7 @@ public class Day05Tests
 61,13,29
 97,13,75,29,47";
 
-  public static readonly string InputFilename = @"../../../Day05_input.txt";
+  public static readonly string InputFilename = @"Day05_input.txt";
 
   [Fact]
   public void ToUpdateValueTests()

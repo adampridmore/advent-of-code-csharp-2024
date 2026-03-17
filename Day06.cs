@@ -4,6 +4,8 @@ public record Position(int X, int Y);
 
 public class Cells
 {
+  public static readonly string InputFilename = @"Day06_input.txt";
+
   private readonly char[][] _cells;
 
   public char[] this[int row]

@@ -4,6 +4,8 @@ namespace advent_of_code_csharp_2024;
 
 public class Day03
 {
+  public static readonly string InputFilename = @"Day03_input.txt";
+
   private static int ProcessMul(Match m)
   {
     var x = int.Parse(m.Groups[1].Value);

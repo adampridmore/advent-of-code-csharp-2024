@@ -2,6 +2,8 @@ namespace advent_of_code_csharp_2024;
 
 public class Day04
 {
+  public static readonly string InputFilename = @"Day04_input.txt";
+
   public record Position(int X, int Y);
 
   public static char GetCellValue(char[][] grid, Position position)
@@ -60,7 +62,7 @@ public class Day04
   }
 
   
-  private static char[][] LinesToChars(IEnumerable<string> lines){
+  public static char[][] LinesToChars(IEnumerable<string> lines){
     return lines
       .Select(line => line.ToCharArray().Where(c => !char.IsWhiteSpace(c)).ToArray())
       .ToArray();

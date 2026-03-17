@@ -41,7 +41,7 @@ MXMXAXMASX";
   ..........
 */
 
-  public static readonly string InputFilename = @"../../../Day04_input.txt";
+  public static readonly string InputFilename = @"Day04_input.txt";
 
   [Fact]
   public void GetCellValueTest()

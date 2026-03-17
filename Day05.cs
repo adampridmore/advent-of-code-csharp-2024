@@ -2,6 +2,8 @@ namespace advent_of_code_csharp_2024;
 
 public class Day05
 {
+  public static readonly string InputFilename = @"Day05_input.txt";
+
   public static IDictionary<int, List<int>> ParseRules(IEnumerable<string> lines)
   {
     return lines

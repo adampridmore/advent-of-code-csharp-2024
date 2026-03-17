@@ -5,7 +5,7 @@ using advent_of_code_csharp_2024.Day06;
 public class Day06Tests
 {
   
-  public static readonly string InputFilename = @"../../../Day06_input.txt";
+  public static readonly string InputFilename = @"Day06_input.txt";
   private static string _testInput = @"....#.....
 .........#
 ..........

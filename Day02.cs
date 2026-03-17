@@ -2,7 +2,7 @@ namespace advent_of_code_csharp_2024;
 
 public static class Day02
 {
-    public static readonly string InputFilename = @"../../../Day02_input.txt";
+    public static readonly string InputFilename = @"Day02_input.txt";
 
     public static List<int> ParseLine(string line)
     {

@@ -2,7 +2,7 @@ namespace advent_of_code_csharp_2024;
 
 public class Day01
 {
-    public static readonly string InputFilename = @"../../../Day01_input.txt";
+    public static readonly string InputFilename = @"Day01_input.txt";
 
     public record Line(int First, int Second);
 
