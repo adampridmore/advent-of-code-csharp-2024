@@ -1,6 +1,6 @@
 namespace advent_of_code_csharp_2024;
 
-public static class Day02
+public class Day02
 {
     public static readonly string InputFilename = @"Day02_input.txt";
 
@@ -43,7 +43,7 @@ public static class Day02
         return IsIncreasingOrDecreasingOnly(lookup);
     }
 
-    public static bool IsSaveTolerant(List<int> line)
+    public static bool IsSafeTolerant(List<int> line)
     {
         if (IsSafe(line))
         {

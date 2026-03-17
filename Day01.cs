@@ -13,7 +13,7 @@ public class Day01
         return new Line(int.Parse(split[0]), int.Parse(split[1]));
     }
 
-    public static int SolveDay1_Part1(IEnumerable<Line> lines)
+    public static int SolvePart1(IEnumerable<Line> lines)
     {
         var leftOrdered = lines.OrderBy(x => x.First);
         var rightOrdered = lines.OrderBy(x => x.Second);
@@ -23,7 +23,7 @@ public class Day01
                 .Sum();
     }
 
-    public static int SolveDay1_Part2(IEnumerable<Line> parsedLines)
+    public static int SolvePart2(IEnumerable<Line> parsedLines)
     {
         var list1 = parsedLines.Select(_ => _.First);
         var list2 = parsedLines.Select(_ => _.Second);

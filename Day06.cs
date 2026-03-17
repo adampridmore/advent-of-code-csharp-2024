@@ -12,7 +12,7 @@ public class Cells
   {
     get
     {
-      return _cells[0];
+      return _cells[row];
     }
   }
 
@@ -117,8 +117,6 @@ public class Guard
     }
 
     Position = nextPosition;
-
-    // Console.WriteLine($"Direction: {Direction} {Position}");
 
     cells.SetTrace(Position);
 

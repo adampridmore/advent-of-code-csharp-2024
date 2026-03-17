@@ -15,13 +15,13 @@ static void PrintDay(int day, Func<object> part1, Func<object> part2)
 
 // Day 01
 PrintDay(1,
-    () => Day01.SolveDay1_Part1(File.ReadLines(Day01.InputFilename).Select(Day01.ParseLine)),
-    () => Day01.SolveDay1_Part2(File.ReadLines(Day01.InputFilename).Select(Day01.ParseLine)));
+    () => Day01.SolvePart1(File.ReadLines(Day01.InputFilename).Select(Day01.ParseLine)),
+    () => Day01.SolvePart2(File.ReadLines(Day01.InputFilename).Select(Day01.ParseLine)));
 
 // Day 02
 PrintDay(2,
     () => (object)File.ReadLines(Day02.InputFilename).Select(Day02.ParseLine).Count(Day02.IsSafe),
-    () => (object)File.ReadLines(Day02.InputFilename).Select(Day02.ParseLine).Count(Day02.IsSaveTolerant));
+    () => (object)File.ReadLines(Day02.InputFilename).Select(Day02.ParseLine).Count(Day02.IsSafeTolerant));
 
 // Day 03
 PrintDay(3,

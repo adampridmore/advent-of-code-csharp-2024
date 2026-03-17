@@ -19,7 +19,7 @@ public class Day01Tests
 
         Assert.Equal(new Day01.Line(3, 4), parsedLines.First());
 
-        var ans = Day01.SolveDay1_Part1(parsedLines);
+        var ans = Day01.SolvePart1(parsedLines);
 
         Assert.Equal(11, ans);
     }
@@ -32,7 +32,7 @@ public class Day01Tests
         var parsedLines = lines
             .Select(Day01.ParseLine);
 
-        var ans = Day01.SolveDay1_Part1(parsedLines);
+        var ans = Day01.SolvePart1(parsedLines);
 
         Assert.Equal(1938424, ans);
     }
@@ -47,7 +47,7 @@ public class Day01Tests
 
         Assert.Equal(new Day01.Line(3, 4), parsedLines.First());
 
-        int answer = Day01.SolveDay1_Part2(parsedLines);
+        int answer = Day01.SolvePart2(parsedLines);
 
         Assert.Equal(31, answer);
     }
@@ -60,7 +60,7 @@ public class Day01Tests
         var parsedLines = lines
             .Select(Day01.ParseLine);
 
-        var ans = Day01.SolveDay1_Part2(parsedLines);
+        var ans = Day01.SolvePart2(parsedLines);
 
         Assert.Equal(22014209, ans);
     }

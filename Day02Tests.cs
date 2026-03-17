@@ -45,7 +45,7 @@ public class Day02Tests
         var expected = new List<int> { 7, 6, 4, 2, 1 };
         Assert.Equal(expected, lines.ToList()[0]);
 
-        Assert.Equal(4, lines.Count(Day02.IsSaveTolerant));
+        Assert.Equal(4, lines.Count(Day02.IsSafeTolerant));
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class Day02Tests
         var parsedLines = lines
             .Select(Day02.ParseLine);
 
-        var ans = parsedLines.Count(Day02.IsSaveTolerant);
+        var ans = parsedLines.Count(Day02.IsSafeTolerant);
 
         Assert.Equal(311, ans);
     }
@@ -84,21 +84,21 @@ public class Day02Tests
     [Fact]
     public void IsSafeTolerantTest()
     {
-        Assert.True(Day02.IsSaveTolerant(new List<int>()), "empty");
-        Assert.True(Day02.IsSaveTolerant(new List<int> { 1, 2 }), "1 2");
-        Assert.True(Day02.IsSaveTolerant(new List<int> { 1, 2 }), "2 1");
-        Assert.True(Day02.IsSaveTolerant(new List<int> { 1, 4 }), "1 4");
-        Assert.True(Day02.IsSaveTolerant(new List<int> { 4, 1 }), "4 1");
+        Assert.True(Day02.IsSafeTolerant(new List<int>()), "empty");
+        Assert.True(Day02.IsSafeTolerant(new List<int> { 1, 2 }), "1 2");
+        Assert.True(Day02.IsSafeTolerant(new List<int> { 1, 2 }), "2 1");
+        Assert.True(Day02.IsSafeTolerant(new List<int> { 1, 4 }), "1 4");
+        Assert.True(Day02.IsSafeTolerant(new List<int> { 4, 1 }), "4 1");
 
-        Assert.False(Day02.IsSaveTolerant(new List<int> { 1, 1, 1 }), "1 1 1");
-        Assert.False(Day02.IsSaveTolerant(new List<int> { 1, 5, 10 }), "1 5 10");
-        Assert.False(Day02.IsSaveTolerant(new List<int> { 10, 5, 1 }), "8 4 1");
+        Assert.False(Day02.IsSafeTolerant(new List<int> { 1, 1, 1 }), "1 1 1");
+        Assert.False(Day02.IsSafeTolerant(new List<int> { 1, 5, 10 }), "1 5 10");
+        Assert.False(Day02.IsSafeTolerant(new List<int> { 10, 5, 1 }), "8 4 1");
 
-        Assert.True(Day02.IsSaveTolerant(Day02.ParseLine("7 6 4 2 1")));
-        Assert.False(Day02.IsSaveTolerant(Day02.ParseLine("1 2 7 8 9")));
-        Assert.False(Day02.IsSaveTolerant(Day02.ParseLine("9 7 6 2 1")));
-        Assert.True(Day02.IsSaveTolerant(Day02.ParseLine("1 3 2 4 5")));
-        Assert.True(Day02.IsSaveTolerant(Day02.ParseLine("8 6 4 4 1")));
-        Assert.True(Day02.IsSaveTolerant(Day02.ParseLine("1 3 6 7 9")));
+        Assert.True(Day02.IsSafeTolerant(Day02.ParseLine("7 6 4 2 1")));
+        Assert.False(Day02.IsSafeTolerant(Day02.ParseLine("1 2 7 8 9")));
+        Assert.False(Day02.IsSafeTolerant(Day02.ParseLine("9 7 6 2 1")));
+        Assert.True(Day02.IsSafeTolerant(Day02.ParseLine("1 3 2 4 5")));
+        Assert.True(Day02.IsSafeTolerant(Day02.ParseLine("8 6 4 4 1")));
+        Assert.True(Day02.IsSafeTolerant(Day02.ParseLine("1 3 6 7 9")));
     }
 }
