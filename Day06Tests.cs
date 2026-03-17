@@ -110,6 +110,18 @@ public class Day06Tests
   }
 
   [Fact]
+  public void Example_partII()
+  {
+    Assert.Equal(6, Guard.CountLoopPositions(_testInput.Split(Environment.NewLine)));
+  }
+
+  [Fact]
+  public void Real_partII()
+  {
+    Assert.Equal(1604, Guard.CountLoopPositions(File.ReadLines(InputFilename)));
+  }
+
+  [Fact]
   public void Edge_case_1(){
     var cells = Cells.FromText(_testInput2);
 

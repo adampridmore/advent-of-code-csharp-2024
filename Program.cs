@@ -47,7 +47,7 @@ PrintDay(6,
         guard.DoRun(cells);
         return (object)cells.VisitCount();
     },
-    () => "N/A");
+    () => Guard.CountLoopPositions(File.ReadLines(Cells.InputFilename)));
 
 // Day 07
 var operatorsI = new[] { Day07.Operator.Add, Day07.Operator.Multiply };

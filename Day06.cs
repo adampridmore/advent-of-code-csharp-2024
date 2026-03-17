@@ -88,6 +88,21 @@ public class Cells
       .SelectMany(row => row)
       .Count(cell => cell == 'X');
   }
+
+  internal IEnumerable<Position> VisitedPositions()
+  {
+    return _cells
+      .SelectMany((row, y) => row.Select((cell, x) => (cell, new Position(x, y))))
+      .Where(t => t.cell == 'X')
+      .Select(t => t.Item2);
+  }
+
+  internal Cells WithObstruction(Position p)
+  {
+    var copy = _cells.Select(row => (char[])row.Clone()).ToArray();
+    copy[p.Y][p.X] = '#';
+    return new Cells(copy);
+  }
 }
 
 public enum Direction { Up, Right, Down, Left };
@@ -152,5 +167,40 @@ public class Guard
     cells.SetTrace(Position);
 
     do { } while (Move(cells));
+  }
+
+  public bool DoRunDetectLoop(Cells cells)
+  {
+    var seen = new HashSet<(Position, Direction)>();
+    seen.Add((Position, Direction));
+    cells.SetTrace(Position);
+
+    while (Move(cells))
+    {
+      if (!seen.Add((Position, Direction)))
+        return true;
+    }
+    return false;
+  }
+
+  public static int CountLoopPositions(IEnumerable<string> lines)
+  {
+    var linesList = lines.ToList();
+    var startCells = Cells.FromLines(linesList);
+    var startPosition = startCells.GetStartPosition();
+
+    var pathGuard = new Guard(startPosition, Direction.Up);
+    pathGuard.DoRun(startCells);
+
+    var candidates = startCells.VisitedPositions()
+      .Where(p => p != startPosition)
+      .ToList();
+
+    return candidates.Count(candidatePos =>
+    {
+      var cells = Cells.FromLines(linesList).WithObstruction(candidatePos);
+      var guard = new Guard(startPosition, Direction.Up);
+      return guard.DoRunDetectLoop(cells);
+    });
   }
 }
