@@ -28,9 +28,9 @@ PrintDay(3,
     () => Day03.RunProgram(File.ReadAllText(Day03.InputFilename)),
     () => Day03.RunProgramPartII(File.ReadAllText(Day03.InputFilename)));
 
-// Day 04 (Part I not implemented)
+// Day 04
 PrintDay(4,
-    () => "N/A",
+    () => Day04.CountXmasWordSearch(Day04.LinesToChars(File.ReadLines(Day04.InputFilename))),
     () => Day04.CountXmas(Day04.LinesToChars(File.ReadLines(Day04.InputFilename))));
 
 // Day 05 (Part II not implemented)

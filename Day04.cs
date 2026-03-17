@@ -62,6 +62,18 @@ public class Day04
   }
 
   
+  public static int CountXmasWordSearch(char[][] grid)
+  {
+    int count = 0;
+    (int dx, int dy)[] directions = [(1,0),(-1,0),(0,1),(0,-1),(1,1),(1,-1),(-1,1),(-1,-1)];
+    for (int y = 0; y < grid.Length; y++)
+      for (int x = 0; x < grid[y].Length; x++)
+        foreach (var (dx, dy) in directions)
+          if ("XMAS".Select((c, k) => GetCellValue(grid, new Position(x + k*dx, y + k*dy)) == c).All(b => b))
+            count++;
+    return count;
+  }
+
   public static char[][] LinesToChars(IEnumerable<string> lines){
     return lines
       .Select(line => line.ToCharArray().Where(c => !char.IsWhiteSpace(c)).ToArray())

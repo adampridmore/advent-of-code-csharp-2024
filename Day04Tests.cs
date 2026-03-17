@@ -62,22 +62,22 @@ MXMXAXMASX";
     Assert.Equal(' ', Day04.GetCellValue(cells, new Day04.Position(0, 2)));
   }
 
-  [Fact(Skip="In progress")]
+  [Fact]
   public void TestExample_part1()
   {
     char[][] grid = LoadGrid();
 
-    Assert.Equal(18, Day04.CountXmas(grid));
+    Assert.Equal(18, Day04.CountXmasWordSearch(grid));
   }
 
-  [Fact(Skip="In progress")]
+  [Fact]
   public void TestRealData_part1()
   {
     var lines = File.ReadLines(InputFilename);
-    
+
     char[][] grid = LinesToChars(lines);
 
-    Assert.Equal(2613, Day04.CountXmas(grid));
+    Assert.Equal(2613, Day04.CountXmasWordSearch(grid));
   }
 
   
