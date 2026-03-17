@@ -62,6 +62,20 @@ public class Day05Tests
   }
 
   [Fact]
+  public void Example_Part2()
+  {
+    var lines = _testInput.Split(Environment.NewLine);
+    Assert.Equal(123, Day05.SolverPartII(lines));
+  }
+
+  [Fact]
+  public void RealData_Part2()
+  {
+    var lines = File.ReadAllLines(InputFilename);
+    Assert.Equal(4743, Day05.SolverPartII(lines));
+  }
+
+  [Fact]
   public void ParseRulesTest()
   {
     var lines = _testInput.Split(Environment.NewLine);

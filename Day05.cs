@@ -72,6 +72,30 @@ public class Day05
     }
   }
 
+  public static List<int> SortUpdate(List<int> update, IDictionary<int, List<int>> rules)
+  {
+    var sorted = new List<int>(update);
+    sorted.Sort((a, b) =>
+    {
+      if (rules.TryGetValue(a, out var aAfter) && aAfter.Contains(b)) return -1;
+      if (rules.TryGetValue(b, out var bAfter) && bAfter.Contains(a)) return 1;
+      return 0;
+    });
+    return sorted;
+  }
+
+  public static int SolverPartII(IEnumerable<string> lines)
+  {
+    var (pageOrderingRules, pageNumbersUpdates) = SplitInput(lines);
+    var rules = ParseRules(pageOrderingRules);
+    var updates = ParseUpdate(pageNumbersUpdates).ToList();
+    return updates
+        .Where(update => !IsUpdateValid(update, rules))
+        .Select(update => SortUpdate(update, rules))
+        .Select(update => update[update.Count / 2])
+        .Sum();
+  }
+
   public static int Solver(IEnumerable<string> lines)
   {
     var (pageOrderingRules, pageNumbersUpdates) = SplitInput(lines);

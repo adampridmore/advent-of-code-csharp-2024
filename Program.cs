@@ -36,7 +36,7 @@ PrintDay(4,
 // Day 05 (Part II not implemented)
 PrintDay(5,
     () => Day05.Solver(File.ReadAllLines(Day05.InputFilename)),
-    () => "N/A");
+    () => Day05.SolverPartII(File.ReadAllLines(Day05.InputFilename)));
 
 // Day 06 (Part II not implemented)
 PrintDay(6,
